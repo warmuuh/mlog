@@ -6,3 +6,4 @@ RemoteSystemsTempFiles/
 .project
 .springBeans
 sources.properties
+application.properties
