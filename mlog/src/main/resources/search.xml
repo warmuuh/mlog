@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane id="StackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="754.0" prefWidth="930.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tailingController">
+<StackPane id="StackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="814.0" prefWidth="1058.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tailingController">
   <children>
-    <SplitPane disable="false" dividerPositions="0.24030172413793102" focusTraversable="true" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="160.0">
+    <SplitPane disable="false" dividerPositions="0.21117424242424243" focusTraversable="true" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="160.0">
       <items>
         <FlowPane maxWidth="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="752.0" prefWidth="220.0">
           <children>
@@ -45,7 +45,7 @@
         </FlowPane>
         <StackPane prefHeight="196.0" prefWidth="598.0">
           <children>
-            <SplitPane id="SplitPane" dividerPositions="0.8746666666666667" orientation="VERTICAL">
+            <SplitPane id="SplitPane" dividerPositions="0.8469135802469135" orientation="VERTICAL">
               <items>
                 <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="false">
                   <columns>
@@ -63,7 +63,11 @@
                 </TableView>
                 <ScrollPane id="ScrollPane" prefViewportHeight="57.0" prefViewportWidth="700.0">
                   <content>
-                    <TextArea prefHeight="372.0001220703125" prefWidth="700.0" wrapText="true" />
+                    <StackPane id="StackPane">
+                      <children>
+                        <TextArea fx:id="details" pickOnBounds="false" prefHeight="348.0" prefWidth="827.0" wrapText="true" />
+                      </children>
+                    </StackPane>
                   </content>
                 </ScrollPane>
               </items>
