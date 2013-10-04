@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,8 @@ public class TailingController implements Initializable {
 	@FXML
 	private TextField searchExpression;
 	@FXML
+	private TextArea details;
+	@FXML
 	private ChoiceBox<String> configurations;
 
 	
@@ -63,6 +66,9 @@ public class TailingController implements Initializable {
 	
 	@Autowired
 	SshStreamSource ssh;
+	
+	
+	
 	private ObservableList<LogEvent> masterData;
 	private ObservableList<LogEvent> filterData;
 	private Filter filter;
@@ -82,6 +88,17 @@ public class TailingController implements Initializable {
 		configurations.getItems().addAll(sources.getConfigs());
 		configurations.getSelectionModel().select(0);
 		masterData = table.getItems();
+		
+		
+		table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
+		table.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<LogEvent>(){
+
+			@Override
+			public void onChanged(
+					javafx.collections.ListChangeListener.Change<? extends LogEvent> evt) {
+				if (evt.getList().size() > 0)
+					details.setText(evt.getList().get(0).getData());
+			}});
 	}
 	
 
