@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.MenuItem?>
+
+<Pane prefHeight='465.0' prefWidth='660.0' xmlns:fx='http://javafx.com/fxml' fx:controller='menuController'>
+ <children>
+  <MenuBar layoutX='0.0' layoutY='0.0'>
+   <menus>
+    <Menu mnemonicParsing='false' text='File'>
+     <items>
+      <MenuItem text='Exit' onAction='#exit' /> 
+     </items>
+    </Menu>
+   </menus>
+  </MenuBar>
+ </children>
+</Pane>
