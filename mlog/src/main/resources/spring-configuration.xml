@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-2.2.xsd
+		http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream-2.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<context:property-placeholder  location="classpath:application.properties" />
+	<util:properties id="sources" location="classpath:sources.properties"/>
+	<context:annotation-config/>
+	<context:component-scan base-package="wrm" />
+
+ <!-- this channel is called by the application and the message is passed to it -->
+    <int:channel id="rawLogEvents"/>
+    <int:channel id="logEvents"/>
+    <int:annotation-config/> 
+ 
+    <!-- this channel receive the modified message -->
+<!--     <int:channel id="outputChannel"/> -->
+ 
+    <!-- this service transform the message in input-channel and send the result to output-channel -->
+    <!-- the service method to call is referenced in explicitly -->
+<!--     <int:service-activator input-channel="inputChannel" ref="helloService" method="sayHello" output-channel="outputChannel"/> -->
+ 
+    <!-- this service receives a message and pass it to printerService -->
+    <!-- the method that consumes the message is implicitly defined by the @ServiceActivator annotation or it should be the only
+    method in the class -->
+    <int:transformer input-channel="rawLogEvents" output-channel="logEvents" ref="logEventTransformer"/>
+    <int:service-activator input-channel="logEvents" ref="tailingController"/>
+
+</beans>

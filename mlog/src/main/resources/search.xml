@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<StackPane id="StackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="708.0" prefWidth="836.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tailingController">
+  <children>
+    <SplitPane disable="false" dividerPositions="0.2517985611510791" focusTraversable="true" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="160.0">
+      <items>
+        <GridPane fx:id="grid" prefHeight="91.0" prefWidth="598.0">
+          <children>
+            <TextField id="searchExpression" fx:id="searchExpression" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="grepExpression" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <FlowPane orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <children>
+                <ChoiceBox fx:id="configurations" prefWidth="200.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList" />
+                  </items>
+                </ChoiceBox>
+              </children>
+            </FlowPane>
+            <GridPane id="GridPane" gridLinesVisible="false" hgap="10.0" vgap="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+              <children>
+                <Button fx:id="tail" defaultButton="true" mnemonicParsing="false" onAction="#startTailing" prefWidth="88.0" text="Start Tailing" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Button fx:id="stop" cancelButton="true" mnemonicParsing="false" onAction="#stopTailing" text="Stop Tailing" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+              </children>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+              </columnConstraints>
+              <padding>
+                <Insets />
+              </padding>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <Label alignment="CENTER_RIGHT" prefHeight="21.0" prefWidth="101.0" text="Grep on server:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label alignment="CENTER_RIGHT" text="Use Configuration:" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label alignment="CENTER_RIGHT" prefWidth="101.0" text="Local Search:" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Button id="doFilter" onAction="#filter" mnemonicParsing="false" text="Filter" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+          </children>
+          <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="0.0" prefWidth="0.0" />
+            <ColumnConstraints fillWidth="false" hgrow="SOMETIMES" maxWidth="537.0" minWidth="10.0" prefWidth="231.0" />
+          </columnConstraints>
+          <rowConstraints>
+            <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="77.0" minHeight="0.0" prefHeight="16.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="98.0" minHeight="0.0" prefHeight="26.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="118.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="153.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="166.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="166.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="193.0" vgrow="SOMETIMES" />
+          </rowConstraints>
+        </GridPane>
+        <StackPane prefHeight="196.0" prefWidth="598.0">
+          <children>
+            <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="false">
+              <columns>
+                <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="497.0" resizable="true" text="data">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="data" />
+                  </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="120.0" resizable="true" text="host">
+                  <cellValueFactory>
+                    <PropertyValueFactory property="host" />
+                  </cellValueFactory>
+                </TableColumn>
+              </columns>
+            </TableView>
+          </children>
+        </StackPane>
+      </items>
+    </SplitPane>
+  </children>
+</StackPane>

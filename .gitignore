@@ -1,1 +1,7 @@
 target/
+.metadata/
+.settings/
+RemoteSystemsTempFiles/
+.classpath
+.project
+.springBeans
