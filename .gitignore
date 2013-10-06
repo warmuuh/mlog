@@ -5,5 +5,5 @@ RemoteSystemsTempFiles/
 .classpath
 .project
 .springBeans
-sources.properties
-application.properties
+mlog/src/conf/
+
