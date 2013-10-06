@@ -1,1 +1,1 @@
-java -cp lib/*.jar wrm.JavaFXApplication
+java -cp ".\config\;libs\*" wrm.JavaFxApplication

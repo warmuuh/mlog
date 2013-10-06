@@ -4,24 +4,33 @@
     <format>zip</format>
   </formats>
   <fileSets>
-    <fileSet>
+     <fileSet>
+      <directory>dist/</directory>
+      <outputDirectory>/</outputDirectory>
       <includes>
-        <directory>conf</directory>
+        <include>*</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>target</directory>
-      <outputDirectory></outputDirectory>
+      <outputDirectory>/libs</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>target/dependency</directory>
+      <outputDirectory>/libs</outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
     </fileSet>
   </fileSets>
-  <dependencySets>
+  <!--<dependencySets>
     <dependencySet>
       <outputDirectory>/</outputDirectory>
       <unpack>true</unpack>
       <scope>runtime</scope>  
     </dependencySet>
-  </dependencySets>
+  </dependencySets>-->
 </assembly>
