@@ -7,7 +7,7 @@ A SSH-logviewer that tails logs on multiple servers in realtime.
 
 === Configuration ===
 
-For configuration, please customize both files in the conf-directory.
+For configuration, please customize both properties-files in the root-directory.
 Set your credentials in application.properties. add a private key, if appropriate.
 
 For specifying your sources to be tailed, add them to sources.properties.
