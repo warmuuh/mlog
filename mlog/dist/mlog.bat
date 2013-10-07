@@ -1,1 +1,1 @@
-java -cp ".\config\;libs\*" wrm.JavaFxApplication
+start javaw -cp ".;libs\*" wrm.JavaFxApplication
