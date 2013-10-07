@@ -1,0 +1,5 @@
+.match { -fx-background-color: forestgreen; }
+.priority-debug { -fx-background-color: cornsilk; }
+.priority-info { }
+.priority-warn { -fx-background-color: yellow; }
+.priority-error { -fx-background-color: firebrick; }

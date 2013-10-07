@@ -23,6 +23,7 @@ public class MyApplication extends Application {
 	 	Parent root = (Parent) loader.load("/search.xml");
 		Scene scene = new Scene(root, 768, 480);
 //		scene.getStylesheets().add("dark.css");
+		scene.getStylesheets().add("row.css");
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("JavaFX demo");
 		primaryStage.show();

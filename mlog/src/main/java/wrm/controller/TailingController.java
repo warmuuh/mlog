@@ -12,11 +12,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.util.Callback;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -46,6 +50,9 @@ public class TailingController implements Initializable {
 			table2.add(event);
 		}
 	}
+	
+	
+	
 
 	@FXML
 	private Button search;
@@ -59,8 +66,9 @@ public class TailingController implements Initializable {
 	private TextArea details;
 	@FXML
 	private ChoiceBox<String> configurations;
+	@FXML
+	private CheckBox highlightOnly;
 
-	
 	@Autowired
 	DataSourceService sources;
 	
@@ -107,7 +115,7 @@ public class TailingController implements Initializable {
 
 		try {
 			List<DataSource> dataSources = sources.getDataSources(selectedConfig);
-			ssh.start(dataSources);
+			ssh.start(dataSources, grepExpression.getText());
 		} catch (JSchException | IOException e) {
 			e.printStackTrace();
 		}
@@ -118,14 +126,55 @@ public class TailingController implements Initializable {
 	}
 	
 	public void filter(){
-		if (filterData != null)
+		if (filter != null)
 			filterOff();
 		else
-			fiterOn();
+			filterOn();
+	}
+
+	
+	public void highlight(){
+		if (filter != null)
+			highlightOff();
+		else
+			highlightOn();
+
+	}
+	
+
+	private void highlightOn() {
+		filter = new Filter(searchExpression.getText(), null);
+		for(TableColumn<LogEvent, ?> c : table.getColumns())
+			if (c.getCellFactory().getClass().equals(TaskCellFactory.class)){
+				TaskCellFactory taskCellFactory = TaskCellFactory.class.cast(c.getCellFactory());
+				taskCellFactory.setHighlightFilter(filter);
+			}
+		
+		refreshTable();
+				
+				
 	}
 
 
-	private void fiterOn() {
+	private void refreshTable() {
+		table.setItems(null);
+		table.layout();
+		table.setItems(masterData);
+	}
+
+
+	private void highlightOff() {
+		filter = null;
+		for(TableColumn<LogEvent, ?> c : table.getColumns())
+			if (c.getCellFactory().getClass().equals(TaskCellFactory.class)){
+				TaskCellFactory taskCellFactory = TaskCellFactory.class.cast(c.getCellFactory());
+				taskCellFactory.setHighlightFilter(null);
+			}
+		refreshTable();
+	}
+
+
+	private void filterOn() {
 		
 		filterData = FXCollections.observableArrayList();
 		filter = new Filter(searchExpression.getText(), filterData);
@@ -145,6 +194,7 @@ public class TailingController implements Initializable {
 		masterData.removeListener(filter);
 		table.setItems(masterData);
 		filterData = null;
+		filter = null;
 	}
 	
 	

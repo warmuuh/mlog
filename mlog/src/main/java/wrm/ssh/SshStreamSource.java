@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.integration.MessageChannel;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import wrm.DataSource;
 
@@ -97,11 +98,11 @@ public class SshStreamSource {
 	
 	
 	
-	public void start(Collection<DataSource> sources) throws JSchException, IOException{
+	public void start(Collection<DataSource> sources, String grepExpression) throws JSchException, IOException{
 		for(DataSource source : sources){
 			Session session = getSshSession(source);
 			sessions.add(session);
-			ChannelExec channel = getExecChannel(session, source);
+			ChannelExec channel = getExecChannel(session, source, grepExpression);
 			channels.add(channel);
 			
 //			final InputStream stream = channel.getInputStream();
@@ -128,22 +129,33 @@ public class SshStreamSource {
 	
 	public Session getSshSession(DataSource source) throws JSchException{
 		
+		boolean useKeyfile = !StringUtils.isEmpty(privateKeyFile);
+		
 		JSch.setConfig("StrictHostKeyChecking", "no");
 		JSch jsch = new JSch();
-		jsch.addIdentity(privateKeyFile, privateKeyPassword);
+		if(useKeyfile)
+			jsch.addIdentity(privateKeyFile, privateKeyPassword);
 		Session session = jsch.getSession(user, source.getHost());
 		session.setDaemonThread(true);
+		if (!useKeyfile)
+			session.setPassword(privateKeyPassword);
 		session.connect();
 		return session;
 	}
 
 
-	private ChannelExec getExecChannel(Session session, DataSource source) throws JSchException {
+	private ChannelExec getExecChannel(Session session, DataSource source, String grepExpression) throws JSchException {
 		ChannelExec execChan = (ChannelExec) session.openChannel("exec");
 		                          
-//		String file = "/data/tomcat/logs/p1091/zapservice.log.{0,date,yyyy-MM-dd}";
 		String file = source.getFilePattern();
-		execChan.setCommand("tail -f " + MessageFormat.format(file, new Date()));
+		String tail = "tail -f " + MessageFormat.format(file, new Date());
+
+		String grep = "";
+		if (!StringUtils.isEmpty(grepExpression))
+			grep = " | grep --line-buffered " + grepExpression;
+		
+		String command = tail + grep;
+		execChan.setCommand(command);
 		return execChan;
 	}
 	

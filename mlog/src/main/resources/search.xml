@@ -9,6 +9,7 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import wrm.controller.*?>
 
 <StackPane id="StackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="814.0" prefWidth="1058.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="tailingController">
   <children>
@@ -41,6 +42,7 @@
             <Label alignment="CENTER_LEFT" prefWidth="83.00009999999747" text="Local Search:" />
             <TextField fx:id="searchExpression" prefWidth="200.0" />
             <Button id="doFilter" mnemonicParsing="false" onAction="#filter" text="Filter" />
+            <Button mnemonicParsing="false" onAction="#highlight" text="Highlight" />
           </children>
         </FlowPane>
         <StackPane prefHeight="196.0" prefWidth="598.0">
@@ -50,6 +52,9 @@
                 <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="false">
                   <columns>
                     <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="497.0" resizable="true" text="data">
+                      <cellFactory>
+                      	<TaskCellFactory />
+                      </cellFactory>
                       <cellValueFactory>
                         <PropertyValueFactory property="data" />
                       </cellValueFactory>
