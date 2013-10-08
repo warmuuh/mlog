@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -15,12 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.util.Callback;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -29,6 +29,8 @@ import org.springframework.stereotype.Component;
 import wrm.DataSource;
 import wrm.DataSourceService;
 import wrm.log.LogEvent;
+import wrm.log.LogLevelFilter;
+import wrm.log.Priority;
 import wrm.ssh.SshStreamSource;
 
 import com.jcraft.jsch.JSchException;
@@ -69,13 +71,19 @@ public class TailingController implements Initializable {
 	@FXML
 	private CheckBox highlightOnly;
 
+	@FXML
+	private ChoiceBox<String> loglevelfilter;
+	
+	
 	@Autowired
 	DataSourceService sources;
 	
 	@Autowired
 	SshStreamSource ssh;
 	
-	
+
+	@Autowired
+	LogLevelFilter logFilter;
 	
 	private ObservableList<LogEvent> masterData;
 	private ObservableList<LogEvent> filterData;
@@ -97,6 +105,15 @@ public class TailingController implements Initializable {
 		configurations.getSelectionModel().select(0);
 		masterData = table.getItems();
 		
+		loglevelfilter.getSelectionModel().select(0);
+		loglevelfilter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> obValue,
+					String old, String newValue) {
+				logFilter.setFilterLevel(Priority.valueOf(newValue));
+			}
+		});
 		
 		table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); 
 		table.getSelectionModel().getSelectedItems().addListener(new ListChangeListener<LogEvent>(){

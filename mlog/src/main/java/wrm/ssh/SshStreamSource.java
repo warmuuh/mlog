@@ -12,6 +12,15 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.annotation.PostConstruct;
+
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,7 +39,10 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 @Component
+@Slf4j
 public class SshStreamSource {
+
+	
 
 	private final class LogStreamer implements Runnable {
 		private MessageChannel msgChan;
@@ -66,12 +78,25 @@ public class SshStreamSource {
 		}
 
 		private void handleChannelMessages(BufferedReader br, ChannelExec channel) throws IOException, JSchException {
+			StringBuilder curLine = new StringBuilder();
 			while (br.ready() && channel.isConnected()){
 				String line = br.readLine();
-				msgChan.send(MessageBuilder.withPayload(line)
-											.setHeader("host", channel.getSession().getHost())
-											.build());
+				log.debug(">{}", line);
+				if (logFormat.matcher(line).matches()) //if current line matches, send old line and record next one
+				{
+					if (curLine != null && curLine.length() > 0){
+						msgChan.send(MessageBuilder.withPayload(curLine.toString())
+							.setHeader("host", channel.getSession().getHost())
+							.build());
+					}
+					curLine = new StringBuilder();
+				}
+				curLine.append(line + "\n");
 			}
+			if (curLine != null && curLine.length() > 0)
+				msgChan.send(MessageBuilder.withPayload(curLine.toString())
+						.setHeader("host", channel.getSession().getHost())
+						.build());
 		}
 	}
 
@@ -84,7 +109,12 @@ public class SshStreamSource {
 	@Value("${ssh.privatekey.file}")
 	String privateKeyFile;
 	
-
+	
+	@Value("${log.format}")
+	String logFormatRegex;
+	Pattern logFormat;
+	
+	
 	
 	@Autowired
 	@Qualifier("rawLogEvents")
@@ -96,7 +126,10 @@ public class SshStreamSource {
 
 	private Thread thread;
 	
-	
+	@PostConstruct
+	public void init() {
+		logFormat = Pattern.compile(logFormatRegex);
+	}
 	
 	public void start(Collection<DataSource> sources, String grepExpression) throws JSchException, IOException{
 		for(DataSource source : sources){
@@ -140,6 +173,7 @@ public class SshStreamSource {
 		if (!useKeyfile)
 			session.setPassword(privateKeyPassword);
 		session.connect();
+		log.debug("Connected: {}", session.isConnected());
 		return session;
 	}
 
@@ -155,6 +189,7 @@ public class SshStreamSource {
 			grep = " | grep --line-buffered " + grepExpression;
 		
 		String command = tail + grep;
+		log.debug("Executing Command: {}", command);
 		execChan.setCommand(command);
 		return execChan;
 	}

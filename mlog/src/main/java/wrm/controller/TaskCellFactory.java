@@ -4,25 +4,25 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
-import javafx.scene.layout.Priority;
 import javafx.util.Callback;
 
 import org.springframework.stereotype.Component;
 
 import wrm.log.LogEvent;
+import wrm.log.Priority;
 
-public class TaskCellFactory implements Callback<TableColumn<LogEvent,String>, TableCell<LogEvent,String>> {
+public class TaskCellFactory implements Callback<TableColumn<LogEvent,Object>, TableCell<LogEvent,Object>> {
 
 	
 	Filter filter;
 	
 	@Override
-	public TableCell<LogEvent,String> call(TableColumn<LogEvent,String> p) {
+	public TableCell<LogEvent,Object> call(TableColumn<LogEvent,Object> p) {
 
-		TableCell<LogEvent,String> cell = new TableCell<LogEvent, String>() {
+		TableCell<LogEvent,Object> cell = new TableCell<LogEvent, Object>() {
 
 			@Override
-			public void updateItem(String item, boolean empty) {
+			public void updateItem(Object item, boolean empty) {
 				super.updateItem(item, empty);
 				setText(empty ? null : getString());
 				setGraphic(null);
@@ -30,11 +30,14 @@ public class TaskCellFactory implements Callback<TableColumn<LogEvent,String>, T
 				LogEvent curEvt = currentRow == null ? null
 						: (LogEvent) currentRow.getItem();
 				if (curEvt != null){
-					clearPriorityStyle();
 					if (!isHover() && !isSelected() && !isFocused()) {
+						clearPriorityStyle();
+						setPriorityStyle(curEvt.getPriority());
 						if (filter != null)
-							if (filter.matches(curEvt))
+							if (filter.matches(curEvt)){
+								clearPriorityStyle();
 								currentRow.getStyleClass().add("match");
+							}
 					}
 				}
 
@@ -56,18 +59,25 @@ public class TaskCellFactory implements Callback<TableColumn<LogEvent,String>, T
 			}
 
 			private void setPriorityStyle(Priority priority) {
-//				switch (priority) {
-//				case LOW:
-//					getStyleClass().add("priorityLow");
-//					break;
-//				case MEDIUM:
-//					getStyleClass().add("priorityMedium");
-//					break;
-//				case HIGH:
-//					getStyleClass().add("priorityHigh");
-//					break;
-//				}
-//				System.out.println(getStyleClass());
+				if (priority == null)
+					return;
+				
+				switch (priority) {
+				case DEBUG:
+					getStyleClass().add("priority-debug");
+					break;
+				case INFO:
+					getStyleClass().add("priority-info");
+					break;
+				case WARN:
+					getStyleClass().add("priority-warn");
+					break;
+				case ERROR:
+				case FATAL:
+					getStyleClass().add("priority-error");
+					break;
+					
+				}
 			}
 
 			private String getString() {

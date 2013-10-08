@@ -19,6 +19,7 @@
  <!-- this channel is called by the application and the message is passed to it -->
     <int:channel id="rawLogEvents"/>
     <int:channel id="logEvents"/>
+    <int:channel id="filteredLogEvents"/>
     <int:annotation-config/> 
  
     <!-- this channel receive the modified message -->
@@ -32,6 +33,7 @@
     <!-- the method that consumes the message is implicitly defined by the @ServiceActivator annotation or it should be the only
     method in the class -->
     <int:transformer input-channel="rawLogEvents" output-channel="logEvents" ref="logEventTransformer"/>
-    <int:service-activator input-channel="logEvents" ref="tailingController"/>
+    <int:filter input-channel="logEvents" output-channel="filteredLogEvents" ref="logLevelFilter"/>
+    <int:service-activator input-channel="filteredLogEvents" ref="tailingController"/>
 
 </beans>
