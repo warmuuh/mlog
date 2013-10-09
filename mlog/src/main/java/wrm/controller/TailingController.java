@@ -127,6 +127,11 @@ public class TailingController implements Initializable {
 	}
 	
 
+	public void clear() {
+		masterData.clear();
+	}
+
+	
 	public void startTailing() {
 		String selectedConfig = configurations.getSelectionModel().getSelectedItem();
 

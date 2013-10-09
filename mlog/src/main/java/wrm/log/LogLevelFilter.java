@@ -10,6 +10,8 @@ public class LogLevelFilter{
 	
 	@Filter
 	public boolean accept(LogEvent message){
+		if (message.getPriority() == null)
+			return true;
 		return message.getPriority().isEqOrMoreSevereThan(filterLevel);
 	}
 

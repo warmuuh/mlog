@@ -30,6 +30,7 @@
               <children>
                 <Button fx:id="tail" defaultButton="true" mnemonicParsing="false" onAction="#startTailing" prefWidth="88.0" text="Start Tailing" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <Button fx:id="stop" cancelButton="true" mnemonicParsing="false" onAction="#stopTailing" text="Stop Tailing" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Button fx:id="clear" defaultButton="true"  mnemonicParsing="false" onAction="#clear" text="Clear" GridPane.columnIndex="1" GridPane.rowIndex="1" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -62,7 +63,7 @@
               <items>
                 <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="false">
                   <columns>
-                    <TableColumn   minWidth="10.0" prefWidth="120" resizable="true" text="Date">
+                    <TableColumn   minWidth="10.0" prefWidth="120" resizable="true" text="Date" sortable="false">
                       <cellFactory>
                       	<TaskCellFactory />
                       </cellFactory>
@@ -70,7 +71,7 @@
                         <PropertyValueFactory property="date" />
                       </cellValueFactory>
                     </TableColumn>
-                     <TableColumn  minWidth="10.0" prefWidth="50"  text="prio">
+                     <TableColumn  minWidth="10.0" prefWidth="50"  text="prio" sortable="false">
                       <cellFactory>
                       	<TaskCellFactory />
                       </cellFactory>
@@ -78,7 +79,7 @@
                         <PropertyValueFactory property="priority" />
                       </cellValueFactory>
                     </TableColumn>
-                     <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="497.0" resizable="true" text="data">
+                     <TableColumn editable="true" maxWidth="5000.0" minWidth="10.0" prefWidth="497.0" resizable="true" sortable="false" text="data">
                       <cellFactory>
                       	<TaskCellFactory />
                       </cellFactory>
@@ -86,7 +87,7 @@
                         <PropertyValueFactory property="data" />
                       </cellValueFactory>
                     </TableColumn>
-                    <TableColumn prefWidth="120.0" resizable="true" text="host">
+                    <TableColumn prefWidth="120.0" resizable="true" text="host" sortable="false">
                       <cellFactory>
                       	<TaskCellFactory />
                       </cellFactory>
@@ -96,15 +97,7 @@
                     </TableColumn>
                   </columns>
                 </TableView>
-                <ScrollPane id="ScrollPane" prefViewportHeight="57.0" prefViewportWidth="700.0">
-                  <content>
-                    <StackPane id="StackPane">
-                      <children>
-                        <TextArea fx:id="details" pickOnBounds="false" prefHeight="348.0" prefWidth="827.0" wrapText="true" />
-                      </children>
-                    </StackPane>
-                  </content>
-                </ScrollPane>
+                    <TextArea fx:id="details" pickOnBounds="false"  wrapText="true" />
               </items>
             </SplitPane>
           </children>

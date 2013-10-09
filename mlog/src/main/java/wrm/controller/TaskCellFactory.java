@@ -81,7 +81,7 @@ public class TaskCellFactory implements Callback<TableColumn<LogEvent,Object>, T
 			}
 
 			private String getString() {
-				return getItem() == null ? "" : getItem().toString();
+				return getItem() == null ? "" : getItem().toString().split("\n")[0];
 			}
 		};
 
