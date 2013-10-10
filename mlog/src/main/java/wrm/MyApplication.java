@@ -25,7 +25,7 @@ public class MyApplication extends Application {
 //		scene.getStylesheets().add("dark.css");
 		scene.getStylesheets().add("row.css");
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("JavaFX demo");
+		primaryStage.setTitle("MLog");
 		primaryStage.show();
 	}
 }
