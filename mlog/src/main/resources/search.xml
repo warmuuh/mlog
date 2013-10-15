@@ -62,6 +62,7 @@
             <SplitPane id="SplitPane" dividerPositions="0.8469135802469135" orientation="VERTICAL">
               <items>
                 <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="false">
+                <columnResizePolicy><TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
                   <columns>
                     <TableColumn   minWidth="10.0" prefWidth="120" resizable="true" text="Date" sortable="false">
                       <cellFactory>

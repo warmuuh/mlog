@@ -26,6 +26,7 @@ public class TaskCellFactory implements Callback<TableColumn<LogEvent,Object>, T
 				super.updateItem(item, empty);
 				setText(empty ? null : getString());
 				setGraphic(null);
+				
 				TableRow<LogEvent> currentRow = getTableRow();
 				LogEvent curEvt = currentRow == null ? null
 						: (LogEvent) currentRow.getItem();
@@ -36,7 +37,7 @@ public class TaskCellFactory implements Callback<TableColumn<LogEvent,Object>, T
 						if (filter != null)
 							if (filter.matches(curEvt)){
 								clearPriorityStyle();
-								currentRow.getStyleClass().add("match");
+								getStyleClass().add("match");
 							}
 					}
 				}
