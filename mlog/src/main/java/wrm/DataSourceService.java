@@ -1,7 +1,7 @@
 package wrm;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.print.attribute.HashAttributeSet;
 
 import org.springframework.stereotype.Component;
 
@@ -41,8 +40,11 @@ public class DataSourceService {
 	}
 	
 	
-	public Set<String> getConfigs(){
-		return dataSources.keySet();
+	public Collection<String> getConfigs(){
+		Set<String> keySet = dataSources.keySet();
+		List<String> result = new LinkedList<>(keySet);
+		Collections.sort(result);
+		return result;
 	}
 	
 	public List<DataSource> getDataSources(String config){

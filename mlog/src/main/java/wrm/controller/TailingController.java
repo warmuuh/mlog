@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -50,6 +51,7 @@ public class TailingController implements Initializable {
 		@Override
 		public void run() {
 			table2.add(event);
+			((Stage)table.getScene().getWindow()).toFront();
 		}
 	}
 	
