@@ -8,6 +8,9 @@ Supports:
 * ssh certificate auth
 * serverside filtering
 
+![Example image](http://1.bp.blogspot.com/-OEtgXdACbiY/Ula6q05Zx6I/AAAAAAAACsc/okPx9dB7rR4/s1600/mlog.png "Example screen")
+
+
 
 It basically streams the result of 'tail | grep' from every server and displays the merged streams.
 
